@@ -1,0 +1,6 @@
+#ifndef _DEQUE_HPP_JDS_20200909
+#define _DEQUE_HPP_JDS_20200909
+
+
+
+#endif //_DEQUE_HPP_JDS_20200909
