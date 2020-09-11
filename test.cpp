@@ -121,15 +121,15 @@ main() {
     FILE *devnull = fopen("/dev/null", "w");
     assert(devnull != 0);
     {
-    //     Deque_MyClass deq;
-    //     Deque_MyClass_ctor(&deq, MyClass_less_by_id);
+         Deque_MyClass deq;
+         Deque_MyClass_ctor(&deq, MyClass_less_by_id);
 
-    //     assert(deq.size(&deq) == 0);
-    //     // size() should return a size_t.
-    //     assert(typeid(std::size_t) == typeid(decltype(deq.size(&deq))));
-    //     assert(deq.empty(&deq));
+         assert(deq.size(&deq) == 0);
+         // size() should return a size_t.
+         assert(typeid(std::size_t) == typeid(decltype(deq.size(&deq))));
+         assert(deq.empty(&deq));
 
-    //     // Should print "---- Deque_MyClass, 14".
+         // Should print "---- Deque_MyClass, 14".
     //     printf("---- %s, %d\n", deq.type_name, (int) sizeof(deq.type_name));
     //     // std::cout << "---- " << deq.type_name << ", " << sizeof(deq.type_name) << std::endl;
     //     assert(sizeof deq.type_name == 14);
