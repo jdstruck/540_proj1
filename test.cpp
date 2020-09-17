@@ -145,11 +145,11 @@ main() {
          assert(deq.front(&deq).id == -1);
          assert(deq.back(&deq).id == 3);
 
-    //     deq.pop_front(&deq);
-    //     deq.pop_back(&deq);
-         //assert(deq.front(&deq).id == 0);
-         //assert(deq.back(&deq).id == 2);
-         //assert(deq.size(&deq) == 3);
+         deq.pop_front(&deq);
+         deq.pop_back(&deq);
+         assert(deq.front(&deq).id == 0);
+         assert(deq.back(&deq).id == 2);
+         assert(deq.size(&deq) == 3);
 
     //     for (Deque_MyClass_Iterator it = deq.begin(&deq);
     //      !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
