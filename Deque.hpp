@@ -125,6 +125,7 @@
         d->curr_size = 0;                                                      \
         d->f_idx = -1;                                                         \
         d->b_idx = 0;                                                          \
+        /*TODO: d->type_name needs to be char * */                             \
         std::string d_str ("Deque_");                                          \
         std::string type_str (#T);                                             \
         d->type_name = d_str + type_str;                                       \
