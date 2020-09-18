@@ -13,7 +13,7 @@
         size_t curr_size;                                                      \
         int f_idx;                                                             \
         int b_idx;                                                             \
-        std::string type_name;                                                 \
+        char type_name[14];                                                      \
         void (*push_back)(Deque_##T *, T);                                     \
         void (*push_front)(Deque_##T *, T);                                    \
         void (*pop_back)(Deque_##T *);                                         \
@@ -126,10 +126,12 @@
         d->f_idx = -1;                                                         \
         d->b_idx = 0;                                                          \
         /*TODO: d->type_name needs to be char * */                             \
-        std::string d_str ("Deque_");                                          \
-        std::string type_str (#T);                                             \
-        d->type_name = d_str + type_str;                                       \
-        std::cout<<d->type_name<<std::endl;                                    \
+        /*std::string d_str ("Deque_");                                          \
+        std::string type_str (#T);                                             */\
+        char tmpstr[40];\
+        strcpy(tmpstr, "Deque_");\
+        strcat(tmpstr, #T);\
+        memcpy(d->type_name, tmpstr, sizeof tmpstr);\
         d->push_front = &Deque_##T##_push_front;                               \
         d->push_back = &Deque_##T##_push_back;                                 \
         d->pop_front = &Deque_##T##_pop_front;                                 \
