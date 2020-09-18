@@ -8,7 +8,7 @@
 
 #define Deque_DEFINE(T)                                                        \
     struct Deque_##T {                                                         \
-        T data[10];                                                            \
+        T data[1024];                                                            \
         size_t capacity;                                                       \
         size_t curr_size;                                                      \
         int f_idx;                                                             \
@@ -125,7 +125,6 @@
         d->curr_size = 0;                                                      \
         d->f_idx = -1;                                                         \
         d->b_idx = 0;                                                          \
-        /*TODO: d->type_name needs to be char * */                             \
         /*std::string d_str ("Deque_");                                          \
         std::string type_str (#T);                                             */\
         strcpy(d->type_name, "Deque_");\
