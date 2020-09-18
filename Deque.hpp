@@ -128,10 +128,8 @@
         /*TODO: d->type_name needs to be char * */                             \
         /*std::string d_str ("Deque_");                                          \
         std::string type_str (#T);                                             */\
-        char tmpstr[40];\
-        strcpy(tmpstr, "Deque_");\
-        strcat(tmpstr, #T);\
-        memcpy(d->type_name, tmpstr, sizeof tmpstr);\
+        strcpy(d->type_name, "Deque_");\
+        strcat(d->type_name, #T);\
         d->push_front = &Deque_##T##_push_front;                               \
         d->push_back = &Deque_##T##_push_back;                                 \
         d->pop_front = &Deque_##T##_pop_front;                                 \
