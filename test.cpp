@@ -170,12 +170,12 @@ main() {
              }
          }
 
-    //     // Test decrement of end.
-    //     {
-    //         auto it = deq.end(&deq);
-    //         it.dec(&it);
-    //         assert(it.deref(&it).id == 2);
-    //     }
+         // Test decrement of end.
+         {
+             auto it = deq.end(&deq);
+             it.dec(&it);
+             assert(it.deref(&it).id == 2);
+         }
 
     //     // printf("Using at.\n");
 

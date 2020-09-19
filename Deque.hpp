@@ -8,15 +8,16 @@
 
 #define Deque_DEFINE(T)                                                        \
     /*typedef T* Deque_##T##_Iterator;*/                                       \
-    struct Deque_##T##_Iterator {                                      \
-        T *data_ptr;                                                        \
-        int curr_idx;                                                        \
-        int capacity;                                                        \
-        void (*inc)(Deque_##T##_Iterator*);                                     \
-        T &(*deref)(Deque_##T##_Iterator*);                                     \
+    struct Deque_##T##_Iterator {                                              \
+        T *data_ptr;                                                           \
+        int curr_idx;                                                          \
+        int capacity;                                                          \
+        void (*inc)(Deque_##T##_Iterator*);                                    \
+        void (*dec)(Deque_##T##_Iterator*);                                    \
+        T &(*deref)(Deque_##T##_Iterator*);                                    \
     };                                                                         \
     struct Deque_##T {                                                         \
-        T data[10];                                                          \
+        T data[10];                                                            \
         size_t capacity;                                                       \
         size_t curr_size;                                                      \
         int f_idx;                                                             \
@@ -139,34 +140,46 @@
         }                                                                      \
     }                                                                          \
                                                                                \
+    void Deque_##T##_Iterator_decrement(Deque_##T##_Iterator *it) {            \
+        if(it->curr_idx == 0) {                                                \
+            it->data_ptr = it->data_ptr + it->capacity-1;                      \
+            it->curr_idx = it->capacity-1;                                     \
+        } else {                                                               \
+            it->data_ptr = it->data_ptr + 1;                                   \
+            ++it->curr_idx;                                                    \
+        }                                                                      \
+    }                                                                          \
+                                                                               \
     T &Deque_##T##_Iterator_dereference(Deque_##T##_Iterator *it) {            \
         return *it->data_ptr;                                                  \
     }                                                                          \
                                                                                \
     Deque_##T##_Iterator Deque_##T##_begin(Deque_##T *d) {                     \
         Deque_##T##_Iterator it;                                               \
-        it.data_ptr = &d->data[d->f_idx];                                       \
-        it.curr_idx = d->f_idx;                                       \
-        it.capacity = d->capacity;                                   \
+        it.data_ptr = &d->data[d->f_idx];                                      \
+        it.curr_idx = d->f_idx;                                                \
+        it.capacity = d->capacity;                                             \
         it.inc = Deque_##T##_Iterator_increment;                               \
+        it.dec = Deque_##T##_Iterator_decrement;                               \
         it.deref = Deque_##T##_Iterator_dereference;                           \
         return it;                                                             \
     }                                                                          \
                                                                                \
     Deque_##T##_Iterator Deque_##T##_end(Deque_##T *d) {                       \
         Deque_##T##_Iterator it;                                               \
-        it.data_ptr = &d->data[d->b_idx];                                       \
-        it.curr_idx = d->b_idx;                                       \
-        it.capacity = d->capacity;                                   \
+        it.data_ptr = &d->data[d->b_idx];                                      \
+        it.curr_idx = d->b_idx;                                                \
+        it.capacity = d->capacity;                                             \
         it.inc = Deque_##T##_Iterator_increment;                               \
+        it.dec = Deque_##T##_Iterator_decrement;                               \
         it.deref = Deque_##T##_Iterator_dereference;                           \
         return it;                                                             \
     }                                                                          \
                                                                                \
     bool Deque_##T##_Iterator_equal(Deque_##T##_Iterator it1,                  \
             Deque_##T##_Iterator it2) {                                        \
-        std::cout << "it1: " << it1.data_ptr << std::endl;                                  \
-        std::cout << "it2: " << it2.data_ptr << std::endl;                                  \
+        std::cout << "it1: " << it1.data_ptr << std::endl;                     \
+        std::cout << "it2: " << it2.data_ptr << std::endl;                     \
         return it1.data_ptr == it2.data_ptr ? true : false;                    \
     }                                                                          \
                                                                                \
