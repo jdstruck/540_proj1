@@ -9,7 +9,7 @@
 #define Deque_DEFINE(T)                                                        \
     /*typedef T* Deque_##T##_Iterator;*/                                       \
     struct Deque_##T##_Iterator {                                      \
-        T *tptr;                                                        \
+        T *data_ptr;                                                        \
         void (*inc)(Deque_##T##_Iterator*);                                     \
         T &(*deref)(Deque_##T##_Iterator*);                                     \
     };                                                                         \
@@ -127,33 +127,35 @@
                 || (d->f_idx == d->b_idx+1) ? true : false;                    \
     }                                                                          \
                                                                                \
+    void Deque_##T##_Iterator_increment(Deque_##T##_Iterator *it) {            \
+        it++;                                                                  \
+    }                                                                          \
+                                                                               \
+    T &Deque_##T##_Iterator_dereference(Deque_##T##_Iterator *it) {            \
+        return *it->data_ptr;                                                  \
+    }                                                                          \
+                                                                               \
     Deque_##T##_Iterator Deque_##T##_begin(Deque_##T *d) {                     \
         Deque_##T##_Iterator it;                                               \
+        it.data_ptr = &d->data[d->f_idx];                                       \
+        it.inc = Deque_##T##_Iterator_increment;                               \
+        it.deref = Deque_##T##_Iterator_dereference;                           \
         return it;                                                             \
     }                                                                          \
                                                                                \
     Deque_##T##_Iterator Deque_##T##_end(Deque_##T *d) {                       \
         Deque_##T##_Iterator it;                                               \
+        it.data_ptr = &d->data[d->b_idx];                                       \
+        it.inc = Deque_##T##_Iterator_increment;                               \
+        it.deref = Deque_##T##_Iterator_dereference;                           \
         return it;                                                             \
     }                                                                          \
                                                                                \
     bool Deque_##T##_Iterator_equal(Deque_##T##_Iterator it1,                  \
             Deque_##T##_Iterator it2) {                                        \
-        return true;                                                           \
+        return it1.data_ptr == it2.data_ptr ? true : false;                                      \
     }                                                                          \
                                                                                \
-    bool Deque_##T##_Iterator_increment(Deque_##T##_Iterator it1,              \
-            Deque_##T##_Iterator it2) {                                        \
-        return true;                                                           \
-    }                                                                          \
-                                                                               \
-    bool Deque_##T##_Iterator_dereference(Deque_##T##_Iterator it1,            \
-            Deque_##T##_Iterator it2) {                                        \
-        return true;                                                           \
-    }                                                                          \
-                                                                               \
-    void *Iterator_inc (Deque_##T##_Iterator*);                                \
-    T & Iterator_deref (Deque_##T##_Iterator*);                                \
     void Deque_##T##_ctor(Deque_##T *d, bool (*)(const T&, const T&)) {        \
         d->capacity = 10;                                                      \
         d->curr_size = 0;                                                      \
