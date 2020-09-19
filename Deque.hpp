@@ -7,13 +7,19 @@
 #include <string>
 
 #define Deque_DEFINE(T)                                                        \
+    /*typedef T* Deque_##T##_Iterator;*/                                       \
+    struct Deque_##T##_Iterator {                                      \
+        T *tptr;                                                        \
+        void (*inc)(Deque_##T##_Iterator*);                                     \
+        T &(*deref)(Deque_##T##_Iterator*);                                     \
+    };                                                                         \
     struct Deque_##T {                                                         \
-        T data[1024];                                                            \
+        T data[1024];                                                          \
         size_t capacity;                                                       \
         size_t curr_size;                                                      \
         int f_idx;                                                             \
         int b_idx;                                                             \
-        char type_name[14];                                                      \
+        char type_name[14];                                                    \
         void (*push_back)(Deque_##T *, T);                                     \
         void (*push_front)(Deque_##T *, T);                                    \
         void (*pop_back)(Deque_##T *);                                         \
@@ -25,6 +31,8 @@
         bool (*empty)(Deque_##T *);                                            \
         bool (*full)(Deque_##T *);                                             \
         void (*delet)(Deque_##T *);                                            \
+        Deque_##T##_Iterator (*begin)(Deque_##T *);                            \
+        Deque_##T##_Iterator (*end)(Deque_##T *);                              \
     };                                                                         \
                                                                                \
     void printidx(Deque_##T *d) {                                              \
@@ -98,7 +106,6 @@
     }                                                                          \
                                                                                \
     T &Deque_##T##_at(Deque_##T *d, int i) {                                   \
-        assert(i < 10);                                                        \
         return d->data[i];                                                     \
     }                                                                          \
                                                                                \
@@ -120,15 +127,42 @@
                 || (d->f_idx == d->b_idx+1) ? true : false;                    \
     }                                                                          \
                                                                                \
+    Deque_##T##_Iterator Deque_##T##_begin(Deque_##T *d) {                     \
+        Deque_##T##_Iterator it;                                               \
+        return it;                                                             \
+    }                                                                          \
+                                                                               \
+    Deque_##T##_Iterator Deque_##T##_end(Deque_##T *d) {                       \
+        Deque_##T##_Iterator it;                                               \
+        return it;                                                             \
+    }                                                                          \
+                                                                               \
+    bool Deque_##T##_Iterator_equal(Deque_##T##_Iterator it1,                  \
+            Deque_##T##_Iterator it2) {                                        \
+        return true;                                                           \
+    }                                                                          \
+                                                                               \
+    bool Deque_##T##_Iterator_increment(Deque_##T##_Iterator it1,              \
+            Deque_##T##_Iterator it2) {                                        \
+        return true;                                                           \
+    }                                                                          \
+                                                                               \
+    bool Deque_##T##_Iterator_dereference(Deque_##T##_Iterator it1,            \
+            Deque_##T##_Iterator it2) {                                        \
+        return true;                                                           \
+    }                                                                          \
+                                                                               \
+    void *Iterator_inc (Deque_##T##_Iterator*);                                \
+    T & Iterator_deref (Deque_##T##_Iterator*);                                \
     void Deque_##T##_ctor(Deque_##T *d, bool (*)(const T&, const T&)) {        \
         d->capacity = 10;                                                      \
         d->curr_size = 0;                                                      \
         d->f_idx = -1;                                                         \
         d->b_idx = 0;                                                          \
-        /*std::string d_str ("Deque_");                                          \
-        std::string type_str (#T);                                             */\
-        strcpy(d->type_name, "Deque_");\
-        strcat(d->type_name, #T);\
+        /*std::string d_str ("Deque_");                                        \
+        std::string type_str (#T);*/                                           \
+        strcpy(d->type_name, "Deque_");                                        \
+        strcat(d->type_name, #T);                                              \
         d->push_front = &Deque_##T##_push_front;                               \
         d->push_back = &Deque_##T##_push_back;                                 \
         d->pop_front = &Deque_##T##_pop_front;                                 \

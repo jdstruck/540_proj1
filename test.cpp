@@ -151,10 +151,10 @@ main() {
          assert(deq.back(&deq).id == 2);
          assert(deq.size(&deq) == 3);
 
-    //     for (Deque_MyClass_Iterator it = deq.begin(&deq);
-    //      !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
-    //         MyClass_print(&it.deref(&it));
-    //     }
+         for (Deque_MyClass_Iterator it = deq.begin(&deq);
+          !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
+             MyClass_print(&it.deref(&it));
+         }
 
     //     // Multiple iterators?
     //     for (Deque_MyClass_Iterator it1 = deq.begin(&deq);
@@ -186,12 +186,12 @@ main() {
     //     // Test that front(), back(), at(), and deref() are returning a reference.
     //     // Change via at().
     //     assert(deq.at(&deq, 0).id == 0);
-    //     deq.at(&deq, 0).id = 100;
-    //     assert(deq.at(&deq, 0).id == 100);
+         deq.at(&deq, 0).id = 100;
+         assert(deq.at(&deq, 0).id == 100);
     //     // Change via front().
     //     assert(deq.front(&deq).id == 100);
-    //     deq.front(&deq).id = 0;
-    //     assert(deq.front(&deq).id == 0);
+         deq.front(&deq).id = 0;
+         assert(deq.front(&deq).id == 0);
     //     assert(deq.at(&deq, 0).id == 0); // Verify with at() also.
     //     {
     //         auto it = deq.end(&deq);
