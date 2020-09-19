@@ -151,41 +151,24 @@ main() {
          assert(deq.back(&deq).id == 2);
          assert(deq.size(&deq) == 3);
 
-//        Deque_MyClass_Iterator itr1 = deq.begin(&deq);
-//        Deque_MyClass_Iterator itr2 = deq.end(&deq);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-//        itr1.inc(&itr1);
-//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
-            for (Deque_MyClass_Iterator it = deq.begin(&deq);
-                 !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
+         for (Deque_MyClass_Iterator it = deq.begin(&deq);
+              !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
              MyClass_print(&it.deref(&it));
          }
 
-    //     // Multiple iterators?
-    //     for (Deque_MyClass_Iterator it1 = deq.begin(&deq);
-    //      !Deque_MyClass_Iterator_equal(it1, deq.end(&deq)); it1.inc(&it1)) {
-    //         MyClass_print(&it1.deref(&it1));
-    //         for (Deque_MyClass_Iterator it2 = deq.begin(&deq);
-    //          !Deque_MyClass_Iterator_equal(it2, deq.end(&deq)); it2.inc(&it2)) {
-    //             MyClass_print(&it2.deref(&it2));
-    //             for (Deque_MyClass_Iterator it3 = deq.begin(&deq);
-    //              !Deque_MyClass_Iterator_equal(it3, deq.end(&deq)); it3.inc(&it3)) {
-    //                 MyClass_print(&it3.deref(&it3));
-    //             }
-    //         }
-    //     }
+         // Multiple iterators?
+         for (Deque_MyClass_Iterator it1 = deq.begin(&deq);
+          !Deque_MyClass_Iterator_equal(it1, deq.end(&deq)); it1.inc(&it1)) {
+             MyClass_print(&it1.deref(&it1));
+             for (Deque_MyClass_Iterator it2 = deq.begin(&deq);
+              !Deque_MyClass_Iterator_equal(it2, deq.end(&deq)); it2.inc(&it2)) {
+                 MyClass_print(&it2.deref(&it2));
+                 for (Deque_MyClass_Iterator it3 = deq.begin(&deq);
+                  !Deque_MyClass_Iterator_equal(it3, deq.end(&deq)); it3.inc(&it3)) {
+                     MyClass_print(&it3.deref(&it3));
+                 }
+             }
+         }
 
     //     // Test decrement of end.
     //     {
