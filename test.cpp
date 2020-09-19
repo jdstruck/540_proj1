@@ -151,8 +151,25 @@ main() {
          assert(deq.back(&deq).id == 2);
          assert(deq.size(&deq) == 3);
 
-         for (Deque_MyClass_Iterator it = deq.begin(&deq);
-          !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
+//        Deque_MyClass_Iterator itr1 = deq.begin(&deq);
+//        Deque_MyClass_Iterator itr2 = deq.end(&deq);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+//        itr1.inc(&itr1);
+//        std::cout << (Deque_MyClass_Iterator_equal(itr1, itr2) == 0 ? "false" : "true") << std::endl;
+            for (Deque_MyClass_Iterator it = deq.begin(&deq);
+                 !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
              MyClass_print(&it.deref(&it));
          }
 
@@ -519,7 +536,6 @@ main() {
     //    	   deq1.sort(&deq1, iter1,iter2);
 
     //    deq1.dtor(&deq1);
-
     }
 
    // Print allocation info
