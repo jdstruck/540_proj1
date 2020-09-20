@@ -17,7 +17,7 @@
         T &(*deref)(Deque_##T##_Iterator*);                                    \
     };                                                                         \
     struct Deque_##T {                                                         \
-        T data[CAP];                                                            \
+        T data[CAP];                                                           \
         size_t capacity;                                                       \
         size_t curr_size;                                                      \
         int f_idx;                                                             \
@@ -33,6 +33,7 @@
         size_t (*size)(Deque_##T *);                                           \
         bool (*empty)(Deque_##T *);                                            \
         bool (*full)(Deque_##T *);                                             \
+        bool (*equal)(Deque_##T *, Deque_##T *);                               \
         void (*dtor)(Deque_##T *);                                             \
         void (*clear)(Deque_##T *);                                            \
         Deque_##T##_Iterator (*begin)(Deque_##T *);                            \
@@ -132,6 +133,14 @@
         return d->f_idx == -1 ? true : false;                                  \
     }                                                                          \
                                                                                \
+    bool Deque_##T##_equal(Deque_##T *d1, Deque_##T *d2) {                       \
+
+        Deque_##T##_Iterator it1 = Deque
+        while()
+
+        return d->f_idx == -1 ? true : false;                                  \
+    }                                                                          \
+                                                                               \
     bool Deque_##T##_full(Deque_##T *d) {                                      \
         return ((d->f_idx ==  0) && (d->b_idx == (int) d->capacity-1))         \
                 || (d->f_idx == d->b_idx+1) ? true : false;                    \
@@ -212,6 +221,7 @@
         d->size = &Deque_##T##_size;                                           \
         d->empty = &Deque_##T##_empty;                                         \
         d->full = &Deque_##T##_full;                                           \
+        d->equal = &Deque_##T##_deque_equal;                                   \
         d->begin = &Deque_##T##_begin;                                         \
         d->end = &Deque_##T##_end;                                             \
     }

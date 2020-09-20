@@ -187,13 +187,13 @@ main() {
         // Test that front(), back(), at(), and deref() are returning a reference.
         // Change via at().
         //assert(deq.at(&deq, 0).id == 0);
-        deq.at(&deq, 0).id = 100;
-        assert(deq.at(&deq, 0).id == 100);
-        // Change via front().
-        assert(deq.front(&deq).id == 100);
-        deq.front(&deq).id = 0;
-        assert(deq.front(&deq).id == 0);
-        assert(deq.at(&deq, 0).id == 0); // Verify with at() also.
+//        deq.at(&deq, 0).id = 100;
+//        assert(deq.at(&deq, 0).id == 100);
+//        // Change via front().
+//        assert(deq.front(&deq).id == 100);
+//        deq.front(&deq).id = 0;
+//        assert(deq.front(&deq).id == 0);
+//        assert(deq.at(&deq, 0).id == 0); // Verify with at() also.
         {
             auto it = deq.end(&deq);
             it.dec(&it);
