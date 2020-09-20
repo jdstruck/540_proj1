@@ -133,12 +133,11 @@
         return d->f_idx == -1 ? true : false;                                  \
     }                                                                          \
                                                                                \
-    bool Deque_##T##_equal(Deque_##T *d1, Deque_##T *d2) {                       \
-
-        Deque_##T##_Iterator it1 = Deque
-        while()
-
-        return d->f_idx == -1 ? true : false;                                  \
+    bool Deque_##T##_deque_equal(Deque_##T *d1, Deque_##T *d2) {                       \
+/*                                                                             \
+        Deque_##T##_Iterator it1 = Deque                                       \
+        while() */                                                             \
+        return d1->f_idx == -1 ? true : false;                                  \
     }                                                                          \
                                                                                \
     bool Deque_##T##_full(Deque_##T *d) {                                      \
