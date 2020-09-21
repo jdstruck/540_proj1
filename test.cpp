@@ -82,10 +82,7 @@ calloc(size_t num, size_t size) {
  * Test for class MyClass.
  */
 
-struct MyClass {
-    int id;
-    char name[10];
-};
+//struct MyClass { int id; char name[10]; };
 
 bool
 MyClass_less_by_id(const MyClass &o1, const MyClass &o2) {
@@ -103,7 +100,7 @@ MyClass_print(const MyClass *o) {
     printf("%s\n", o->name);
 }
 
-Deque_DEFINE(MyClass)
+//Deque_DEFINE(MyClass)
 
 /*
  * Test for int.
@@ -152,20 +149,20 @@ main() {
 
         assert(deq.size(&deq) == 3);
 
-        for (Deque_MyClass_Iterator it = deq.begin(&deq);
-             !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
-            MyClass_print(&it.deref(&it));
-        }
-
-        // Multiple iterators?
+//        for (Deque_MyClass_Iterator it = deq.begin(&deq);
+//         !Deque_MyClass_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
+//            MyClass_print(&it.deref(&it));
+//        }
+//
+//        // Multiple iterators?
 //        for (Deque_MyClass_Iterator it1 = deq.begin(&deq);
-//             !Deque_MyClass_Iterator_equal(it1, deq.end(&deq)); it1.inc(&it1)) {
+//         !Deque_MyClass_Iterator_equal(it1, deq.end(&deq)); it1.inc(&it1)) {
 //            MyClass_print(&it1.deref(&it1));
 //            for (Deque_MyClass_Iterator it2 = deq.begin(&deq);
-//                 !Deque_MyClass_Iterator_equal(it2, deq.end(&deq)); it2.inc(&it2)) {
+//             !Deque_MyClass_Iterator_equal(it2, deq.end(&deq)); it2.inc(&it2)) {
 //                MyClass_print(&it2.deref(&it2));
 //                for (Deque_MyClass_Iterator it3 = deq.begin(&deq);
-//                     !Deque_MyClass_Iterator_equal(it3, deq.end(&deq)); it3.inc(&it3)) {
+//                 !Deque_MyClass_Iterator_equal(it3, deq.end(&deq)); it3.inc(&it3)) {
 //                    MyClass_print(&it3.deref(&it3));
 //                }
 //            }
@@ -186,14 +183,14 @@ main() {
 
         // Test that front(), back(), at(), and deref() are returning a reference.
         // Change via at().
-        //assert(deq.at(&deq, 0).id == 0);
-//        deq.at(&deq, 0).id = 100;
-//        assert(deq.at(&deq, 0).id == 100);
-//        // Change via front().
-//        assert(deq.front(&deq).id == 100);
-//        deq.front(&deq).id = 0;
-//        assert(deq.front(&deq).id == 0);
-//        assert(deq.at(&deq, 0).id == 0); // Verify with at() also.
+        assert(deq.at(&deq, 0).id == 0);
+        deq.at(&deq, 0).id = 100;
+        assert(deq.at(&deq, 0).id == 100);
+        // Change via front().
+        assert(deq.front(&deq).id == 100);
+        deq.front(&deq).id = 0;
+        assert(deq.front(&deq).id == 0);
+        assert(deq.at(&deq, 0).id == 0); // Verify with at() also.
         {
             auto it = deq.end(&deq);
             it.dec(&it);
@@ -272,7 +269,7 @@ main() {
 //        assert(deq.size(&deq) == 3);
 //
 //        for (Deque_int_Iterator it = deq.begin(&deq);
-//             !Deque_int_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
+//         !Deque_int_Iterator_equal(it, deq.end(&deq)); it.inc(&it)) {
 //            printf("%d\n", it.deref(&it));
 //        }
 //
@@ -381,20 +378,20 @@ main() {
 //
 //    // Test random access performance
 //    {
-//        size_t sum = 0;
-//        int lo = 0, hi = 10000000;
-//        Deque_int deq;
-//        Deque_int_ctor(&deq, int_less);
+//       size_t sum = 0;
+//       int lo = 0, hi = 10000000;
+//       Deque_int deq;
+//       Deque_int_ctor(&deq, int_less);
 //
-//        for(int i = lo; i < hi; i++) {
-//            deq.push_back(&deq, i);
-//        }
+//       for(int i = lo; i < hi; i++) {
+//          deq.push_back(&deq, i);
+//       }
 //
-//        for(int i = lo; i < hi; i++) {
-//            sum += deq.at(&deq, i);
-//        }
-//        printf("Sum of all integers between %d and %d calculated using a deque is %lu.\n", lo, hi, sum);
-//        deq.dtor(&deq);
+//       for(int i = lo; i < hi; i++) {
+//          sum += deq.at(&deq, i);
+//       }
+//       printf("Sum of all integers between %d and %d calculated using a deque is %lu.\n", lo, hi, sum);
+//       deq.dtor(&deq);
 //    }
 //
 //    // Test sort.
@@ -417,41 +414,41 @@ main() {
 //
 //    // Sorting Test 2
 //    {
-//        Deque_int deq1;
-//        Deque_int_ctor(&deq1, int_less);
+//       Deque_int deq1;
+//       Deque_int_ctor(&deq1, int_less);
 //
-//        for (int i=0;i<10000;i++) {
-//            deq1.push_back(&deq1, i);
-//        }
+//       for (int i=0;i<10000;i++) {
+//           deq1.push_back(&deq1, i);
+//       }
 //
-//        for (int i=20000;i>=10000;i--) {
-//            deq1.push_back(&deq1,i);
-//        }
+//       for (int i=20000;i>=10000;i--) {
+//           deq1.push_back(&deq1,i);
+//       }
 //
-//        deq1.push_back(&deq1,20001);
+//       deq1.push_back(&deq1,20001);
 //
-//        auto iter1 =  deq1.end(&deq1);
-//        iter1.dec(&iter1);
+//       auto iter1 =  deq1.end(&deq1);
+//       iter1.dec(&iter1);
 //
-//        auto iter2 = deq1.begin(&deq1);
+//       auto iter2 = deq1.begin(&deq1);
 //
-//        for (int i=0;i<10000;i++) {
-//            iter2.inc(&iter2);
-//        }
+//       for (int i=0;i<10000;i++) {
+//           iter2.inc(&iter2);
+//       }
 //
-//        deq1.sort(&deq1, iter2,iter1);
+//       deq1.sort(&deq1, iter2,iter1);
 //
-//        Deque_int deq2;
-//        Deque_int_ctor(&deq2 , int_less);
+//       Deque_int deq2;
+//       Deque_int_ctor(&deq2 , int_less);
 //
-//        for(int i=0;i<=20001;i++) {
-//            deq2.push_back(&deq2,i);
-//        }
+//       for(int i=0;i<=20001;i++) {
+//           deq2.push_back(&deq2,i);
+//       }
 //
-//        assert(Deque_int_equal(deq1, deq2));
+//      assert(Deque_int_equal(deq1, deq2));
 //
-//        deq1.dtor(&deq1);
-//        deq2.dtor(&deq2);
+//      deq1.dtor(&deq1);
+//      deq2.dtor(&deq2);
 //    }
 //
 //    // Test sort with different comparators.
@@ -497,8 +494,8 @@ main() {
 //    // Performance testing for sorting
 //    {
 //
-//        Deque_int deq1;
-//        Deque_int_ctor(&deq1, int_less);
+//       Deque_int deq1;
+//       Deque_int_ctor(&deq1, int_less);
 //
 //        std::default_random_engine e;
 //        using rand = std::uniform_int_distribution<int>;
@@ -507,24 +504,24 @@ main() {
 //            deq1.push_back(&deq1, rand(-1000000, 1000000)(e));
 //        }
 //
-//        auto iter1 = deq1.begin(&deq1);
-//        auto iter2 = deq1.begin(&deq1);
+//       auto iter1 = deq1.begin(&deq1);
+//       auto iter2 = deq1.begin(&deq1);
 //
-//        for(int i=0;i<10;i++)
-//            iter1.inc(&iter1);
+//       for(int i=0;i<10;i++)
+//           iter1.inc(&iter1);
 //
-//        for(int i=0;i<20;i++)
-//            iter2.inc(&iter2);
+//       for(int i=0;i<20;i++)
+//           iter2.inc(&iter2);
 //
-//        for(int i=0;i<1000000;i++)
-//            deq1.sort(&deq1, iter1,iter2);
+//       for(int i=0;i<1000000;i++)
+//       	   deq1.sort(&deq1, iter1,iter2);
 //
-//        deq1.dtor(&deq1);
+//       deq1.dtor(&deq1);
 //
 //    }
 
-    // Print allocation info
-    printf("%ld allocations totalling %ld bytes\n", alloc_call_count, total_bytes_allocated);
-    int rv = fclose(devnull);
-    assert(rv == 0);
+   // Print allocation info
+   printf("%ld allocations totalling %ld bytes\n", alloc_call_count, total_bytes_allocated);
+   int rv = fclose(devnull);
+   assert(rv == 0);
 }
