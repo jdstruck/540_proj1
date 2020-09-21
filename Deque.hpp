@@ -8,6 +8,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+
 // Use INT macro for all Ts so as to not
 // break when converting from macro version
 // to standard struct when testing
@@ -20,8 +21,7 @@
 #define CAP 1024
 #define Deque_DEFINE(T)                                                         \
     /*typedef T* Deque_##T##_Iterator;*/                                        \
-        char T##str[] = #T;\
-        const INT T##str_sizeof = sizeof(T##str) + 6;\
+        const INT T##str_sizeof = sizeof(#T) + 6;                               \
     struct Deque_##T##_Iterator {                                               \
         T *data_ptr;                                                            \
         int curr_idx;                                                           \
@@ -36,7 +36,7 @@
         size_t curr_size;                                                       \
         int f_idx;                                                              \
         int b_idx;                                                              \
-        char type_name[T##str_sizeof];                                                     \
+        char type_name[T##str_sizeof];                                          \
         void (*push_back)(Deque_##T *, T);                                      \
         void (*push_front)(Deque_##T *, T);                                     \
         void (*pop_back)(Deque_##T *);                                          \
