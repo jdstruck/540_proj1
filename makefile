@@ -8,8 +8,11 @@ $(MAIN) : $(MAIN).o
 $(MAIN).o : Deque.hpp $(MAIN).cpp
 	g++ -c $(FLAGS) $(MAIN).cpp
 
-clean : 
+clean :
 	rm $(MAIN) $(MAIN).o
 
 run : $(MAIN)
 	./$(MAIN)
+
+memcheck : $(MAIN)
+	valgrind $(MAIN)
