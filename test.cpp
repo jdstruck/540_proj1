@@ -114,7 +114,7 @@ int_less(const int &o1, const int &o2) {
     return o1 < o2;
 }
 
-Deque_DEFINE(int)
+//Deque_DEFINE(int)
 
 int
 main() {
@@ -211,35 +211,35 @@ main() {
 
         deq.dtor(&deq);
 
-//        // Test equality.  Two deques compare equal if they are of the same
-//        // length and all the elements compare equal.  It is undefined behavior
-//        // if the two deques were constructed with different comparison
-//        // functions.
-//        {
-//            Deque_MyClass deq1, deq2;
-//            Deque_MyClass_ctor(&deq1, MyClass_less_by_id);
-//            Deque_MyClass_ctor(&deq2, MyClass_less_by_id);
-//
-//            deq1.push_back(&deq1, MyClass{1, "Joe"});
-//            deq1.push_back(&deq1, MyClass{2, "Jane"});
-//            deq1.push_back(&deq1, MyClass{3, "Mary"});
-//            deq2.push_back(&deq2, MyClass{1, "Joe"});
-//            deq2.push_back(&deq2, MyClass{2, "Jane"});
-//            deq2.push_back(&deq2, MyClass{3, "Mary"});
-//
-//            assert(Deque_MyClass_equal(deq1, deq2));
-//
-//            deq1.pop_back(&deq1);
-//            assert(!Deque_MyClass_equal(deq1, deq2));
-//            deq1.push_back(&deq1, MyClass{4, "Mary"});
-//            assert(!Deque_MyClass_equal(deq1, deq2));
-//
-//            deq1.dtor(&deq1);
-//            deq2.dtor(&deq2);
-//        }
-//
-//    }
-//
+        // Test equality.  Two deques compare equal if they are of the same
+        // length and all the elements compare equal.  It is undefined behavior
+        // if the two deques were constructed with different comparison
+        // functions.
+        {
+            Deque_MyClass deq1, deq2;
+            Deque_MyClass_ctor(&deq1, MyClass_less_by_id);
+            Deque_MyClass_ctor(&deq2, MyClass_less_by_id);
+
+            deq1.push_back(&deq1, MyClass{1, "Joe"});
+            deq1.push_back(&deq1, MyClass{2, "Jane"});
+            deq1.push_back(&deq1, MyClass{3, "Mary"});
+            deq2.push_back(&deq2, MyClass{1, "Joe"});
+            deq2.push_back(&deq2, MyClass{2, "Jane"});
+            deq2.push_back(&deq2, MyClass{3, "Mary"});
+
+            assert(Deque_MyClass_equal(deq1, deq2));
+
+            deq1.pop_back(&deq1);
+            assert(!Deque_MyClass_equal(deq1, deq2));
+            deq1.push_back(&deq1, MyClass{4, "Mary"});
+            assert(!Deque_MyClass_equal(deq1, deq2));
+
+            deq1.dtor(&deq1);
+            deq2.dtor(&deq2);
+        }
+
+    }
+
 //    // Test that it can handle other types.  Tests are the same, more or less.
 //    {
 //        Deque_int deq;
@@ -521,7 +521,7 @@ main() {
 //
 //        deq1.dtor(&deq1);
 //
-    }
+//    }
 
     // Print allocation info
     printf("%ld allocations totalling %ld bytes\n", alloc_call_count, total_bytes_allocated);

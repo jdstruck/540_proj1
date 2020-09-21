@@ -1,10 +1,12 @@
 #ifndef __DEQUE_H_
 #define __DEQUE_H_
 
-#include <assert.h>
-#include <stdlib.h>
+#include <cassert>
+#include <cstdlib>
 #include <iostream>
 #include <string>
+#include <cstring>
+
 #define CAP 5
 #define Deque_DEFINE(T)                                                        \
     /*typedef T* Deque_##T##_Iterator;*/                                       \
@@ -32,13 +34,16 @@
         T &(*back)(Deque_##T *);                                               \
         size_t (*size)(Deque_##T *);                                           \
         bool (*empty)(Deque_##T *);                                            \
+        bool (*comp)(const T&, const T&);                                      \
         bool (*full)(Deque_##T *);                                             \
-        bool (*equal)(Deque_##T *, Deque_##T *);                               \
         void (*dtor)(Deque_##T *);                                             \
         void (*clear)(Deque_##T *);                                            \
         Deque_##T##_Iterator (*begin)(Deque_##T *);                            \
         Deque_##T##_Iterator (*end)(Deque_##T *);                              \
     };                                                                         \
+                                                                               \
+    bool Deque_##T##_Iterator_equal(Deque_##T##_Iterator,                      \
+                                    Deque_##T##_Iterator);                     \
                                                                                \
     void printidx(Deque_##T *d) {                                              \
         std::cout << "capacity: " << d->capacity << std::endl;                 \
@@ -115,8 +120,9 @@
     }                                                                          \
                                                                                \
     void Deque_##T##_destructor(Deque_##T *d) {                                \
-        free(d->data);                                                         \
-        free(d);                                                               \
+        /* TODO: Fix destructor!*/                                             \
+        /*free(d->data);*/                                                     \
+        /*free(d); */                                                          \
     }                                                                          \
                                                                                \
     void Deque_##T##_clear(Deque_##T *d) {                                     \
@@ -133,11 +139,23 @@
         return d->f_idx == -1 ? true : false;                                  \
     }                                                                          \
                                                                                \
-    bool Deque_##T##_deque_equal(Deque_##T *d1, Deque_##T *d2) {                       \
-/*                                                                             \
-        Deque_##T##_Iterator it1 = Deque                                       \
-        while() */                                                             \
-        return d1->f_idx == -1 ? true : false;                                  \
+    bool Deque_##T##_equal(Deque_##T &d1, Deque_##T &d2) {                     \
+        if(d1.curr_size != d2.curr_size) {                                     \
+            return false;                                                      \
+        } else {                                                               \
+            Deque_##T##_Iterator it1 = d1.begin(&d1);                          \
+            Deque_##T##_Iterator it2 = d2.begin(&d2);                          \
+            do {                                                               \
+                /*if(!(it1.deref(&it1) == it2.deref(&it2))) {*/                \
+                if(!(memcmp((const void *) &it1.deref(&it1),                   \
+                            (const void *) &it2.deref(&it2), sizeof(T)))) {    \
+                    return false;                                              \
+                }                                                              \
+                it1.inc(&it1);                                                 \
+                it2.inc(&it2);                                                 \
+            } while (!Deque_##T##_Iterator_equal(it1, d1.end(&d1)));           \
+            return true;                                                       \
+        }                                                                      \
     }                                                                          \
                                                                                \
     bool Deque_##T##_full(Deque_##T *d) {                                      \
@@ -199,8 +217,8 @@
         return it1.data_ptr == it2.data_ptr ? true : false;                    \
     }                                                                          \
                                                                                \
-    void Deque_##T##_ctor(Deque_##T *d, bool (*)(const T&, const T&)) {        \
-        d->capacity = CAP;                                                      \
+    void Deque_##T##_ctor(Deque_##T *d, bool (*comp)(const T&, const T&)) {    \
+        d->capacity = CAP;                                                     \
         d->curr_size = 0;                                                      \
         d->f_idx = -1;                                                         \
         d->b_idx = 0;                                                          \
@@ -220,8 +238,8 @@
         d->size = &Deque_##T##_size;                                           \
         d->empty = &Deque_##T##_empty;                                         \
         d->full = &Deque_##T##_full;                                           \
-        d->equal = &Deque_##T##_deque_equal;                                   \
         d->begin = &Deque_##T##_begin;                                         \
         d->end = &Deque_##T##_end;                                             \
+        d->comp = comp;                                                       \
     }
 #endif // __DEQUE_H_
