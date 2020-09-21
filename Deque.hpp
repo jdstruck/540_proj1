@@ -74,7 +74,7 @@ struct MyClass { INMyClass id; char name[10]; };
         }                                                                     
         d->data[d->b_idx] = val;                                              
         d->curr_size++;                                                       
-        printidx(d);                                                          
+        // printidx(d);
     }                                                                         
                                                                               
     void Deque_MyClass_push_front(Deque_MyClass *d, MyClass val) {                        
@@ -88,7 +88,7 @@ struct MyClass { INMyClass id; char name[10]; };
         }                                                                     
         d->data[d->f_idx] = val;                                              
         d->curr_size++;                                                       
-        printidx(d);                                                          
+        // printidx(d);
     }                                                                         
                                                                               
     void Deque_MyClass_pop_back(Deque_MyClass *d) {                                 
