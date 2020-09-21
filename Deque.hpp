@@ -157,10 +157,10 @@ struct MyClass { INMyClass id; char name[10]; };
             Deque_MyClass_Iterator it2 = d2.begin(&d2);                         
             do {                                                              
                 /*if(!(it1.deref(&it1) == it2.deref(&it2))) {*/
-                std::cout << &it1.deref(&it1) << std::endl;
-                std::cout << &it2.deref(&it2) << std::endl;
-                std::cout << memcmp((const void *) &it1.deref(&it1),
-                            (const void *) &it2.deref(&it2), sizeof(MyClass)) << std::endl;
+//                std::cout << &it1.deref(&it1) << std::endl;
+//                std::cout << &it2.deref(&it2) << std::endl;
+//                std::cout << memcmp((const void *) &it1.deref(&it1),
+//                            (const void *) &it2.deref(&it2), sizeof(MyClass)) << std::endl;
                     if((memcmp((const void *) &it1.deref(&it1),
                             (const void *) &it2.deref(&it2), sizeof(MyClass)))) {   
                     return false;                                             
