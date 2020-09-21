@@ -226,8 +226,8 @@ struct MyClass { INMyClass id; char name[10]; };
                                                                               
     bool Deque_MyClass_Iterator_equal(Deque_MyClass_Iterator it1,                 
             Deque_MyClass_Iterator it2) {                                       
-        std::cout << "it1: " << it1.data_ptr << std::endl;                    
-        std::cout << "it2: " << it2.data_ptr << std::endl;                    
+//        std::cout << "it1: " << it1.data_ptr << std::endl;
+//        std::cout << "it2: " << it2.data_ptr << std::endl;
         return it1.data_ptr == it2.data_ptr;
     }                                                                         
                                                                               
