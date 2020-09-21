@@ -226,7 +226,6 @@
     }                                                                           \
                                                                                 \
     void Deque_##T##_ctor(Deque_##T *d, bool (*comp)(const T&, const T&)) {     \
-        std::cout << "T##str " << T##str << " " << T##str_sizeof << std::endl;  \
         d->capacity = CAP;                                                      \
         d->curr_size = 0;                                                       \
         d->f_idx = -1;                                                          \
