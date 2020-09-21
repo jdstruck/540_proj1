@@ -1,6 +1,6 @@
 #MAIN = main
 MAIN = test
-FLAGS = -ldl -g -Wall -Werror -Wpedantic
+FLAGS =  -ldl -g  -Wall -Werror -Wpedantic
 
 $(MAIN) : $(MAIN).o
 	g++ $(FLAGS) -o $(MAIN) $(MAIN).o

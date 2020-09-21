@@ -17,9 +17,11 @@
 // struct MyClass { INT id; char name[10]; };
 
 
-#define CAP 5
+#define CAP 1024
 #define Deque_DEFINE(T)                                                         \
     /*typedef T* Deque_##T##_Iterator;*/                                        \
+        char T##str[] = #T;\
+        const INT T##str_sizeof = sizeof(T##str) + 6;\
     struct Deque_##T##_Iterator {                                               \
         T *data_ptr;                                                            \
         int curr_idx;                                                           \
@@ -34,7 +36,7 @@
         size_t curr_size;                                                       \
         int f_idx;                                                              \
         int b_idx;                                                              \
-        char type_name[14];                                                     \
+        char type_name[T##str_sizeof];                                                     \
         void (*push_back)(Deque_##T *, T);                                      \
         void (*push_front)(Deque_##T *, T);                                     \
         void (*pop_back)(Deque_##T *);                                          \
@@ -224,14 +226,12 @@
     }                                                                           \
                                                                                 \
     void Deque_##T##_ctor(Deque_##T *d, bool (*comp)(const T&, const T&)) {     \
+        std::cout << "T##str " << T##str << " " << T##str_sizeof << std::endl;  \
         d->capacity = CAP;                                                      \
         d->curr_size = 0;                                                       \
         d->f_idx = -1;                                                          \
         d->b_idx = 0;                                                           \
-        /*std::string d_str ("Deque_");                                         \
-        std::string type_str (#T);*/                                            \
-        strcpy(d->type_name, "Deque_");                                         \
-        strcat(d->type_name, #T);                                               \
+        sprintf(d->type_name, "%s", "Deque_" #T);                               \
         d->push_front = &Deque_##T##_push_front;                                \
         d->push_back = &Deque_##T##_push_back;                                  \
         d->pop_front = &Deque_##T##_pop_front;                                  \
