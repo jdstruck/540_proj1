@@ -15,4 +15,4 @@ run : $(MAIN)
 	./$(MAIN)
 
 memcheck : $(MAIN)
-	valgrind $(MAIN)
+	valgrind --leak-check=full ./$(MAIN)
