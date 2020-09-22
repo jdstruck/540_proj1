@@ -59,7 +59,7 @@ struct MyClass { INT id; char name[10]; };
 
     void Deque_MyClass_resize(Deque_MyClass *deq) {
         /* Double size of and reallocate data array */
-        auto old_cap = deq->capacity;
+        INT old_cap = deq->capacity;
         deq->capacity *= 2;
         deq->data = (MyClass *) realloc(deq->data, sizeof(MyClass) * deq->capacity);
         if(deq->f_idx > deq->b_idx) {
