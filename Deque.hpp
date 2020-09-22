@@ -65,7 +65,6 @@ struct MyClass { INT id; char name[10]; };
         if(deq->f_idx > deq->b_idx) {
             for(INT i = deq->f_idx; i < old_cap; ++i) {
                 INT memmove_idx = deq->capacity - ((old_cap) - i);
-//                memmove ( &deq->data[memmove_idx], &deq->data[i], sizeof( MyClass ));
                 deq->data[memmove_idx] = deq->data[i];
             }
             deq->f_idx = deq->capacity - (old_cap - deq->f_idx);
@@ -92,9 +91,6 @@ struct MyClass { INT id; char name[10]; };
         } else {
             ++deq->b_idx;
         }
-
-//        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
-//        memcpy ( &deq->data[deq->b_idx], &val, sizeof(MyClass) );
         deq->data[deq->b_idx] = val;
         deq->curr_size++;
     }
@@ -110,8 +106,6 @@ struct MyClass { INT id; char name[10]; };
         } else {
             --deq->f_idx;
         }
-//        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
-//        memcpy ( &deq->data[deq->f_idx], &val, sizeof(MyClass) );
         deq->data[deq->f_idx] = val;
         deq->curr_size++;
     }
@@ -123,7 +117,7 @@ struct MyClass { INT id; char name[10]; };
             return;
         }
         if(deq->b_idx == 0) {
-            deq->b_idx = deq->capacity-1;
+            deq->b_idx = (int) deq->capacity-1;
         } else {
             --deq->b_idx;
         }
@@ -144,23 +138,21 @@ struct MyClass { INT id; char name[10]; };
     }
 
     MyClass &Deque_MyClass_front(Deque_MyClass *deq) {
-//        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
         return deq->data[deq->f_idx];
     }
 
     MyClass &Deque_MyClass_back(Deque_MyClass *deq) {
-//        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
         return deq->data[deq->b_idx];
     }
 
     MyClass &Deque_MyClass_at(Deque_MyClass *deq, int i) {
-        int at_idx = (i + deq->f_idx) % deq->capacity;
+        int at_idx = (i + deq->f_idx) % (int) deq->capacity;
         return deq->data[at_idx];
     }
 
     void Deque_MyClass_destructor(Deque_MyClass *deq) {
         free(deq->data);
-        //free(d);
+       /* free(d); */
     }
 
     void Deque_MyClass_clear(Deque_MyClass *deq) {
@@ -177,21 +169,22 @@ struct MyClass { INT id; char name[10]; };
         return deq->curr_size == 0;
     }
 
-bool Deque_MyClass_equal(Deque_MyClass &d1, Deque_MyClass &d2) {
-        if(d1.curr_size != d2.curr_size) {
+    bool Deque_MyClass_equal(Deque_MyClass &deq1, Deque_MyClass &deq2) {
+        if(deq1.curr_size != deq2.curr_size) {
             return false;
         } else {
-            Deque_MyClass_Iterator it1 = d1.begin(&d1);
-            Deque_MyClass_Iterator it2 = d2.begin(&d2);
+            Deque_MyClass_Iterator it1 = deq1.begin(&deq1);
+            Deque_MyClass_Iterator it2 = deq2.begin(&deq2);
             do {
-                /*if(!(it1.deref(&it1) == it2.deref(&it2))) {*/
-                    if((memcmp((const void *) &it1.deref(&it1),
-                            (const void *) &it2.deref(&it2), sizeof(MyClass)))) {
+                /* Check that dereferenced items both not less than each other
+                 * This works for MyClass_less_by_id, hopefully others */
+                if (!(!deq1.comp(it1.deref(&it1), it1.deref(&it2)) &&
+                      !deq1.comp(it1.deref(&it2), it1.deref(&it1))))
                     return false;
-                }
-                it1.inc(&it1);
-                it2.inc(&it2);
-            } while (!Deque_MyClass_Iterator_equal(it1, d1.end(&d1)));
+                else
+                    it1.inc(&it1);
+                    it2.inc(&it2);
+            } while (!Deque_MyClass_Iterator_equal(it1, deq1.end(&deq1)));
             return true;
         }
     }
