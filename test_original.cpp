@@ -217,15 +217,16 @@ main() {
         // functions.
         {
             Deque_MyClass deq1, deq2;
+            // Compare on ID.  Name is ignored.
             Deque_MyClass_ctor(&deq1, MyClass_less_by_id);
             Deque_MyClass_ctor(&deq2, MyClass_less_by_id);
 
             deq1.push_back(&deq1, MyClass{1, "Joe"});
             deq1.push_back(&deq1, MyClass{2, "Jane"});
             deq1.push_back(&deq1, MyClass{3, "Mary"});
-            deq2.push_back(&deq2, MyClass{1, "Joe"});
-            deq2.push_back(&deq2, MyClass{2, "Jane"});
-            deq2.push_back(&deq2, MyClass{3, "Mary"});
+            deq2.push_back(&deq2, MyClass{1, "John"});
+            deq2.push_back(&deq2, MyClass{2, "Alice"});
+            deq2.push_back(&deq2, MyClass{3, "Mike"});
 
             assert(Deque_MyClass_equal(deq1, deq2));
 
@@ -459,21 +460,23 @@ main() {
         Deque_MyClass sort_by_id, sorted_by_id;
         Deque_MyClass sort_by_name, sorted_by_name;
 
+        // The two deques below compare on ID only.
         Deque_MyClass_ctor(&sort_by_id, MyClass_less_by_id);
         Deque_MyClass_ctor(&sorted_by_id, MyClass_less_by_id);
+        // The two deques below compare on name only.
         Deque_MyClass_ctor(&sort_by_name, MyClass_less_by_name);
         Deque_MyClass_ctor(&sorted_by_name, MyClass_less_by_name);
 
-        sort_by_id.push_back(&sort_by_id, MyClass{1, "Bob"});
-        sort_by_id.push_back(&sort_by_id, MyClass{3, "Sheldon"});
-        sort_by_id.push_back(&sort_by_id, MyClass{2, "Alex"});
+        sort_by_id.push_back(&sort_by_id, MyClass{1, "Mary"});
+        sort_by_id.push_back(&sort_by_id, MyClass{3, "Beth"});
+        sort_by_id.push_back(&sort_by_id, MyClass{2, "Kevin"});
 
         sorted_by_id.push_back(&sorted_by_id, MyClass{1, "Bob"});
         sorted_by_id.push_back(&sorted_by_id, MyClass{2, "Alex"});
         sorted_by_id.push_back(&sorted_by_id, MyClass{3, "Sheldon"});
 
-        sort_by_name.push_back(&sort_by_name, MyClass{1, "Bob"});
-        sort_by_name.push_back(&sort_by_name, MyClass{3, "Sheldon"});
+        sort_by_name.push_back(&sort_by_name, MyClass{9, "Bob"});
+        sort_by_name.push_back(&sort_by_name, MyClass{6, "Sheldon"});
         sort_by_name.push_back(&sort_by_name, MyClass{2, "Alex"});
 
         sorted_by_name.push_back(&sorted_by_name, MyClass{2, "Alex"});
