@@ -6,6 +6,7 @@ import re
 replace_type = "MyClass"
 wfile_text = ""
 drawBSlash = False
+lineWidth = 100
 
 with open(sys.argv[1], 'r') as rfile:
     for index, line in enumerate(rfile):
@@ -41,7 +42,7 @@ with open(sys.argv[1], 'r') as rfile:
                 drawBSlash = False
             if drawBSlash:
                 # print(len(nline))
-                nline = nline.replace("\n", (" " * (80 - len(nline))) + " \\\n")
+                nline = nline.replace("\n", (" " * (lineWidth - len(nline))) + " \\\n")
         wfile_text += nline
 with open(sys.argv[1], 'w') as wfile:
     new_file = "".join(wfile_text)
