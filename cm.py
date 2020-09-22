@@ -15,10 +15,10 @@ with open(sys.argv[1], 'r') as rfile:
         if index == 0:
             if line.find("/* Macro */") > -1:
                 isMacro = True
-                nline = line.replace("/* Macro */", "/* No Macro */")
+                nline = nline.replace("/* Macro */", "/* No Macro */")
             else:
                 isMacro = False
-                nline = line.replace("/* No Macro */", "/* Macro */")
+                nline = nline.replace("/* No Macro */", "/* Macro */")
         if isMacro:
             nline = nline.replace("// struct MyClass {", "struct MyClass {")
             nline = nline.replace("#define Deque_DEFINE", "//#define Deque_DEFINE")
@@ -35,7 +35,7 @@ with open(sys.argv[1], 'r') as rfile:
             nline = nline.replace("\"" + str(replace_type) + "\"", "#TYPE")
             nline = nline.replace(str(replace_type), "TYPE")
             nline = nline.replace("struct TYPE {", "struct MyClass {")
-            if(nline.find("//#define Deque_DEFINE") > -1):
+            if nline.find("//#define Deque_DEFINE") > -1:
                 drawBSlash = True
                 nline = nline.replace("//#define", "#define")
             if nline.find("/* End Macro */") > -1:
