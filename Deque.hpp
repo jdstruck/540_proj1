@@ -93,9 +93,9 @@ struct MyClass { INT id; char name[10]; };
             ++deq->b_idx;
         }
 
+//        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
 //        memcpy ( &deq->data[deq->b_idx], &val, sizeof(MyClass) );
         deq->data[deq->b_idx] = val;
-        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
         deq->curr_size++;
     }
 
@@ -110,51 +110,52 @@ struct MyClass { INT id; char name[10]; };
         } else {
             --deq->f_idx;
         }
-        deq->data[deq->f_idx] = val;
-        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
+//        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
 //        memcpy ( &deq->data[deq->f_idx], &val, sizeof(MyClass) );
+        deq->data[deq->f_idx] = val;
         deq->curr_size++;
     }
 
 
     void Deque_MyClass_pop_back(Deque_MyClass *deq) {
-        if(deq->empty(deq)) return;
-        if(deq->f_idx == deq->b_idx) {
+        if(deq->empty(deq)) {
             deq->f_idx = deq->b_idx = -1;
-        } else if(deq->b_idx == 0) {
+            return;
+        }
+        if(deq->b_idx == 0) {
             deq->b_idx = deq->capacity-1;
         } else {
             --deq->b_idx;
         }
-        deq->curr_size--;
+        --deq->curr_size;
     }
 
     void Deque_MyClass_pop_front(Deque_MyClass *deq) {
-        if(deq->empty(deq)) return;
-        if(deq->f_idx == deq->b_idx) {
+        if(deq->empty(deq)) {
             deq->f_idx = deq->b_idx = -1;
-        } else {
-            if (deq->f_idx == (int) deq->capacity-1) {
-                deq->f_idx = 0;
-            } else {
-                ++deq->f_idx;
-            }
+            return;
         }
-        deq->curr_size--;
+        if (deq->f_idx == (int) deq->capacity-1) {
+            deq->f_idx = 0;
+        } else {
+            ++deq->f_idx;
+        }
+        --deq->curr_size;
     }
 
     MyClass &Deque_MyClass_front(Deque_MyClass *deq) {
-        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
+//        std::cout << deq->f_idx << " " << deq->data[deq->f_idx].id << " " << deq->data[deq->f_idx].name << std::endl;
         return deq->data[deq->f_idx];
     }
 
     MyClass &Deque_MyClass_back(Deque_MyClass *deq) {
-        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
+//        std::cout << deq->b_idx << " " << deq->data[deq->b_idx].id << " " << deq->data[deq->b_idx].name << std::endl;
         return deq->data[deq->b_idx];
     }
 
     MyClass &Deque_MyClass_at(Deque_MyClass *deq, int i) {
-        return deq->data[i+deq->f_idx];
+        int at_idx = (i + deq->f_idx) % deq->capacity;
+        return deq->data[at_idx];
     }
 
     void Deque_MyClass_destructor(Deque_MyClass *deq) {
@@ -201,7 +202,7 @@ bool Deque_MyClass_equal(Deque_MyClass &d1, Deque_MyClass &d2) {
 
     void Deque_MyClass_Iterator_increment(Deque_MyClass_Iterator *it) {
         if(it->curr_idx == it->deque_capacity-1) {
-            it->data_ptr = it->data_ptr - it->deque_capacity;
+            it->data_ptr = it->data_ptr - it->deque_capacity + 1;
             it->curr_idx = 0;
         } else {
             ++it->data_ptr;
@@ -211,7 +212,7 @@ bool Deque_MyClass_equal(Deque_MyClass &d1, Deque_MyClass &d2) {
 
     void Deque_MyClass_Iterator_decrement(Deque_MyClass_Iterator *it) {
         if(it->curr_idx == 0) {
-            it->data_ptr = it->data_ptr + it->deque_capacity-1;
+            it->data_ptr = it->data_ptr + it->deque_capacity - 1;
             it->curr_idx = it->deque_capacity-1;
         } else {
             --it->data_ptr;
