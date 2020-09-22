@@ -181,9 +181,8 @@ struct MyClass { INT id; char name[10]; };
                 if (!(!deq1.comp(it1.deref(&it1), it1.deref(&it2)) &&
                       !deq1.comp(it1.deref(&it2), it1.deref(&it1))))
                     return false;
-                else
-                    it1.inc(&it1);
-                    it2.inc(&it2);
+                it1.inc(&it1);
+                it2.inc(&it2);
             } while (!Deque_MyClass_Iterator_equal(it1, deq1.end(&deq1)));
             return true;
         }
