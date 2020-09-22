@@ -63,8 +63,8 @@ struct MyClass { INT id; char name[10]; };
         deq->capacity *= 2;
         deq->data = (MyClass *) realloc(deq->data, sizeof(MyClass) * deq->capacity);
         if(deq->f_idx > deq->b_idx) {
-            for(auto i = deq->f_idx; i < old_cap; ++i) {
-                auto memmove_idx = deq->capacity - ((old_cap) - i);
+            for(INT i = deq->f_idx; i < old_cap; ++i) {
+                INT memmove_idx = deq->capacity - ((old_cap) - i);
 //                memmove ( &deq->data[memmove_idx], &deq->data[i], sizeof( MyClass ));
                 deq->data[memmove_idx] = deq->data[i];
             }
