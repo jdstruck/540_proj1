@@ -413,45 +413,45 @@ main() {
     }
 
 
-//    // Sorting Test 2
-//    {
-//        Deque_int deq1;
-//        Deque_int_ctor(&deq1, int_less);
-//
-//        for (int i=0;i<10000;i++) {
-//            deq1.push_back(&deq1, i);
-//        }
-//
-//        for (int i=20000;i>=10000;i--) {
-//            deq1.push_back(&deq1,i);
-//        }
-//
-//        deq1.push_back(&deq1,20001);
-//
-//        auto iter1 =  deq1.end(&deq1);
-//        iter1.dec(&iter1);
-//
-//        auto iter2 = deq1.begin(&deq1);
-//
-//        for (int i=0;i<10000;i++) {
-//            iter2.inc(&iter2);
-//        }
-//
-//        deq1.sort(&deq1, iter2,iter1);
-//
-//        Deque_int deq2;
-//        Deque_int_ctor(&deq2 , int_less);
-//
-//        for(int i=0;i<=20001;i++) {
-//            deq2.push_back(&deq2,i);
-//        }
-//
-//        assert(Deque_int_equal(deq1, deq2));
-//
-//        deq1.dtor(&deq1);
-//        deq2.dtor(&deq2);
-//    }
-//
+    // Sorting Test 2
+    {
+        Deque_int deq1;
+        Deque_int_ctor(&deq1, int_less);
+
+        for (int i=0;i<10000;i++) {
+            deq1.push_back(&deq1, i);
+        }
+
+        for (int i=20000;i>=10000;i--) {
+            deq1.push_back(&deq1,i);
+        }
+
+        deq1.push_back(&deq1,20001);
+
+        auto iter1 =  deq1.end(&deq1);
+        iter1.dec(&iter1);
+
+        auto iter2 = deq1.begin(&deq1);
+
+        for (int i=0;i<10000;i++) {
+            iter2.inc(&iter2);
+        }
+
+        deq1.sort(&deq1, iter2,iter1);
+
+        Deque_int deq2;
+        Deque_int_ctor(&deq2 , int_less);
+
+        for(int i=0;i<=20001;i++) {
+            deq2.push_back(&deq2,i);
+        }
+
+        assert(Deque_int_equal(deq1, deq2));
+
+        deq1.dtor(&deq1);
+        deq2.dtor(&deq2);
+    }
+
 //    // Test sort with different comparators.
 //    {
 //        Deque_MyClass sort_by_id, sorted_by_id;
