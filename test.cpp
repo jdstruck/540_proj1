@@ -494,34 +494,34 @@ main() {
 //        sorted_by_name.dtor(&sorted_by_name);
 //    }
 //
-//    // Performance testing for sorting
-//    {
-//
-//        Deque_int deq1;
-//        Deque_int_ctor(&deq1, int_less);
-//
-//        std::default_random_engine e;
-//        using rand = std::uniform_int_distribution<int>;
-//
-//        for (int i = 0; i < 1000000; i++) {
-//            deq1.push_back(&deq1, rand(-1000000, 1000000)(e));
-//        }
-//
-//        auto iter1 = deq1.begin(&deq1);
-//        auto iter2 = deq1.begin(&deq1);
-//
-//        for(int i=0;i<10;i++)
-//            iter1.inc(&iter1);
-//
-//        for(int i=0;i<20;i++)
-//            iter2.inc(&iter2);
-//
-//        for(int i=0;i<1000000;i++)
-//            deq1.sort(&deq1, iter1,iter2);
-//
-//        deq1.dtor(&deq1);
-//
-//    }
+    // Performance testing for sorting
+    {
+
+        Deque_int deq1;
+        Deque_int_ctor(&deq1, int_less);
+
+        std::default_random_engine e;
+        using rand = std::uniform_int_distribution<int>;
+
+        for (int i = 0; i < 1000000; i++) {
+            deq1.push_back(&deq1, rand(-1000000, 1000000)(e));
+        }
+
+        auto iter1 = deq1.begin(&deq1);
+        auto iter2 = deq1.begin(&deq1);
+
+        for(int i=0;i<10;i++)
+            iter1.inc(&iter1);
+
+        for(int i=0;i<20;i++)
+            iter2.inc(&iter2);
+
+        for(int i=0;i<1000000;i++)
+            deq1.sort(&deq1, iter1,iter2);
+
+        deq1.dtor(&deq1);
+
+    }
 
     // Print allocation info
     printf("%ld allocations totalling %ld bytes\n", alloc_call_count, total_bytes_allocated);

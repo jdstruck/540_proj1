@@ -201,13 +201,12 @@
 /*        for (Deque_int_Iterator it = begin; !Deque_int_Iterator_equal(it, end); it.inc(&it)) {
             std::cout  << it.deref(&it) << std::endl;
         }*/
-        int i, j, k;
+        int j, k;
         Deque_int_Iterator it = begin;
         it.inc(&it);
         for (; !Deque_int_Iterator_equal(it, end); it.inc(&it)) {
             k = it.deref(&it);
             j = it.curr_idx - 1;
-            int dj = deq->data[j];
             while(j > 0 && deq->comp(k, deq->data[j])) {
                 deq->data[j + 1] = deq->data[j];
                 --j;
