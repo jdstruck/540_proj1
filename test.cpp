@@ -100,7 +100,7 @@ MyClass_print(const MyClass *o) {
     printf("%s\n", o->name);
 }
 
-//Deque_DEFINE(MyClass)
+Deque_DEFINE(MyClass)
 
 /*
  * Test for int.
@@ -111,7 +111,7 @@ int_less(const int &o1, const int &o2) {
     return o1 < o2;
 }
 
-//Deque_DEFINE(int)
+Deque_DEFINE(int)
 
 int
 main() {
@@ -493,7 +493,7 @@ main() {
 //        sort_by_name.dtor(&sort_by_name);
 //        sorted_by_name.dtor(&sorted_by_name);
 //    }
-//
+
     // Performance testing for sorting
     {
 

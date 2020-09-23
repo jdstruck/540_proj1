@@ -22,27 +22,39 @@
 
 #define CAP 1
 //#define Deque_DEFINE(int)
-    const INT str_int_sizeof = sizeof( "int" ) + 6;
+struct Deque_int_Iterator;
+bool Deque_int_Iterator_equal(Deque_int_Iterator,
+                              Deque_int_Iterator);
+const INT str_int_sizeof = sizeof( "int" ) + 6;
     struct Deque_int_Iterator {
         int *data_ptr;
-        int curr_idx;
-        int deque_capacity;
+        INT curr_idx;
+        INT deque_capacity;
         void (*inc)(Deque_int_Iterator*);
         void (*dec)(Deque_int_Iterator*);
         int &(*deref)(Deque_int_Iterator*);
+        inline bool operator!=( struct Deque_int_Iterator it) {
+            return Deque_int_Iterator_equal(*this, it);
+        }
+        inline bool operator-( struct Deque_int_Iterator it) {
+            return this->deref(this) - it.deref(&it);
+        }
+        inline int operator+( int i) {
+            return this->deref(this) + i;
+        }
     };
     struct Deque_int {
         int *data;
         size_t capacity;
         size_t curr_size;
-        int f_idx;
-        int b_idx;
+        INT f_idx;
+        INT b_idx;
         char type_name[str_int_sizeof];
         void (*push_back)(Deque_int *, int);
         void (*push_front)(Deque_int *, int);
         void (*pop_back)(Deque_int *);
         void (*pop_front)(Deque_int *);
-        int &(*at)(Deque_int *, int i);
+        int &(*at)(Deque_int *, INT);
         int &(*front)(Deque_int *);
         int &(*back)(Deque_int *);
         size_t (*size)(Deque_int *);
@@ -56,14 +68,18 @@
         Deque_int_Iterator (*end)(Deque_int *);
     };
 
-    bool Deque_int_Iterator_equal(Deque_int_Iterator,
-                                    Deque_int_Iterator);
+    void Deque_int_Iterator_decrement(Deque_int_Iterator *);
+    void Deque_int_Iterator_increment(Deque_int_Iterator *);
+    int &Deque_int_Iterator_dereference(Deque_int_Iterator *);
+    Deque_int_Iterator &Deque_int_Iterator_at(Deque_int, INT);
+
+
 
     void Deque_int_resize(Deque_int *deq) {
         /* Double size of and reallocate data array */
         INT old_cap = deq->capacity;
         deq->capacity *= 2;
-        deq->data = (int *) realloc(deq->data, sizeof(int) * deq->capacity);
+        deq->data = (int *) realloc(deq->data, sizeof( INT ) * deq->capacity);
         if(deq->f_idx > deq->b_idx) {
             for(INT i = deq->f_idx; i < old_cap; ++i) {
                 INT memmove_idx = deq->capacity - ((old_cap) - i);
@@ -88,7 +104,7 @@
         }
         if(deq->empty(deq)) {
             deq->f_idx = deq->b_idx = 0;
-        } else if(deq->b_idx == (int) deq->capacity-1) {
+        } else if(deq->b_idx == ( INT ) deq->capacity-1) {
             deq->b_idx = 0;
         } else {
             ++deq->b_idx;
@@ -119,7 +135,7 @@
             return;
         }
         if(deq->b_idx == 0) {
-            deq->b_idx = (int) deq->capacity-1;
+            deq->b_idx = ( INT ) deq->capacity-1;
         } else {
             --deq->b_idx;
         }
@@ -131,7 +147,7 @@
             deq->f_idx = deq->b_idx = -1;
             return;
         }
-        if (deq->f_idx == (int) deq->capacity-1) {
+        if (deq->f_idx == ( INT ) deq->capacity-1) {
             deq->f_idx = 0;
         } else {
             ++deq->f_idx;
@@ -147,9 +163,20 @@
         return deq->data[deq->b_idx];
     }
 
-    int &Deque_int_at(Deque_int *deq, int i) {
-        int at_idx = (i + deq->f_idx) % (int) deq->capacity;
+    int &Deque_int_at(Deque_int *deq, INT i) {
+        INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;
         return deq->data[at_idx];
+    }
+    Deque_int_Iterator Deque_int_Iterator_at(Deque_int *deq, INT i) {
+        Deque_int_Iterator it;
+        INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;
+        it.curr_idx = at_idx;\
+        it.data_ptr = &deq->data[it.curr_idx];
+        it.deque_capacity = deq->capacity;
+        it.inc = Deque_int_Iterator_increment;
+        it.dec = Deque_int_Iterator_decrement;
+        it.deref = Deque_int_Iterator_dereference;
+        return it;
     }
 
     void Deque_int_destructor(Deque_int *deq) {
@@ -195,33 +222,63 @@
         return deq->curr_size == deq->capacity;
     }
 
+    void Deque_int_print(Deque_int *deq) {
+
+        for (Deque_int_Iterator it = deq->begin(deq);
+             !Deque_int_Iterator_equal(it, deq->end(deq)); it.inc(&it)) {
+            std::cout  << it.deref(&it) << std::endl;
+        }
+        std::cout << std::endl;
+    }
     void Deque_int_sort(Deque_int *deq,
                         Deque_int_Iterator begin,
                         Deque_int_Iterator end) {
-/*        for (Deque_int_Iterator it = begin; !Deque_int_Iterator_equal(it, end); it.inc(&it)) {
-            std::cout  << it.deref(&it) << std::endl;
-        }*/
+//        Deque_int_print(deq);
         int j, k;
-        Deque_int_Iterator it = begin;
+        Deque_int_Iterator it = begin, j_it, j_itp1;
         it.inc(&it);
         for (; !Deque_int_Iterator_equal(it, end); it.inc(&it)) {
             k = it.deref(&it);
-            j = it.curr_idx - 1;
-            while(j > 0 && deq->comp(k, deq->data[j])) {
-                deq->data[j + 1] = deq->data[j];
-                --j;
+            j_it = Deque_int_Iterator_at(deq, it.curr_idx-1);
+            j = j_it.deref(&j_it);
+//            while(j_it.curr_idx >= begin.curr_idx && deq->comp(k, j)) {
+            int jitci = j_it.curr_idx;
+            int beginci = begin.curr_idx;
+            bool jgteb = jitci >= beginci;
+            bool jnebegin = !Deque_int_Iterator_equal(j_it, begin);
+            bool compkj = deq->comp(k,j);
+
+            while(jgteb && compkj) {
+                int jitp1 = deq->data[j_it.curr_idx + 1];
+                int jitp0 = deq->data[j_it.curr_idx];
+                deq->data[j_it.curr_idx + 1] = deq->data[j_it.curr_idx];
+                j_it.dec(&j_it);
+                j = it.deref(&j_it);
+                if(jitci == 0 && beginci == 0) break;
+                jitci = j_it.curr_idx;
+                beginci = begin.curr_idx;
+                jgteb = jitci >= beginci;
+                jnebegin = !Deque_int_Iterator_equal(j_it, begin);
+                compkj = deq->comp(k,j);
             }
-            deq->data[j + 1] = k;
+            j_itp1 = Deque_int_Iterator_at(deq, j_it.curr_idx+1);
+            it.deref(&j_itp1) = k;
+//            Deque_int_print(deq);
         }
-/*        for (Deque_int_Iterator it = begin; !Deque_int_Iterator_equal(it, end); it.inc(&it)) {
-            std::cout  << it.deref(&it) << std::endl;
-        }*/
+//        Deque_int_print(deq);
     }
 
+//    void Deque_int_sort(Deque_int *deq,
+//                        Deque_int_Iterator begin,
+//                        Deque_int_Iterator end) {
+//        Deque_int_print(deq);
+//        std::sort(begin, end, deq->comp);
+//        Deque_int_print(deq);
+//    }
 
 
-    void Deque_int_Iterator_increment(Deque_int_Iterator *it) {
-        if(it->curr_idx == it->deque_capacity-1) {
+void Deque_int_Iterator_increment(Deque_int_Iterator *it) {
+    if(it->curr_idx == it->deque_capacity-1) {
             it->data_ptr = it->data_ptr - it->deque_capacity + 1;
             it->curr_idx = 0;
         } else {
