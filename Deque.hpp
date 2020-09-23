@@ -10,21 +10,21 @@
 #include <cstring>
 #include <algorithm>
 
-// Use INT macro for all standard TYPEs.
-// Prevents inadvertently replacing with
-// "T" when converting to/from macro
-// to run TYPE tests
+// Use INT macro for all ints not dependent on type
+// passed into Deque_DEFINE() macro. Otherwise they
+// get redefined.
+
+// Note: The script is dumb, so after converting back from
+// make sure to check the "int" at the end of the next line,
+// plus "sprintf" in the ctor after converting back from int,
+// possibly other places...
 #define INT int
 
 // Redefine for testing; commented out when macro
 /*// struct MyClass { INT id; char name[10]; };*/
 
-
-#define CAP 1
 #define Deque_DEFINE(TYPE)                                                                          \
 struct Deque_##TYPE##_Iterator;                                                                     \
-bool Deque_##TYPE##_Iterator_equal(Deque_##TYPE##_Iterator,                                         \
-                              Deque_##TYPE##_Iterator);                                             \
 const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                                                \
     struct Deque_##TYPE##_Iterator {                                                                \
         TYPE *data_ptr;                                                                             \
@@ -64,21 +64,19 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
     void Deque_##TYPE##_Iterator_increment(Deque_##TYPE##_Iterator *);                              \
     TYPE &Deque_##TYPE##_Iterator_dereference(Deque_##TYPE##_Iterator *);                           \
     Deque_##TYPE##_Iterator &Deque_##TYPE##_Iterator_at(Deque_##TYPE, INT);                         \
-                                                                                                    \
-                                                                                                    \
+    bool Deque_##TYPE##_Iterator_equal(Deque_##TYPE##_Iterator, Deque_##TYPE##_Iterator);           \
                                                                                                     \
     void Deque_##TYPE##_resize(Deque_##TYPE *deq) {                                                 \
         /* Double size of and reallocate data array */                                              \
         INT old_cap = deq->capacity;                                                                \
         deq->capacity *= 2;                                                                         \
-        deq->data = (TYPE *) realloc(deq->data, sizeof( TYPE ) * deq->capacity);                     \
+        deq->data = (TYPE *) realloc(deq->data, sizeof( TYPE ) * deq->capacity);                    \
         if(deq->f_idx > deq->b_idx) {                                                               \
             for(INT i = deq->f_idx; i < old_cap; ++i) {                                             \
                 INT memmove_idx = deq->capacity - ((old_cap) - i);                                  \
                 deq->data[memmove_idx] = deq->data[i];                                              \
             }                                                                                       \
             deq->f_idx = deq->capacity - (old_cap - deq->f_idx);                                    \
-                                                                                                    \
         }                                                                                           \
     }                                                                                               \
                                                                                                     \
@@ -111,7 +109,6 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         deq->data[deq->f_idx] = val;                                                                \
         deq->curr_size++;                                                                           \
     }                                                                                               \
-                                                                                                    \
                                                                                                     \
     void Deque_##TYPE##_pop_back(Deque_##TYPE *deq) {                                               \
         if(deq->empty(deq)) {                                                                       \
@@ -151,6 +148,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;                                      \
         return deq->data[at_idx];                                                                   \
     }                                                                                               \
+                                                                                                    \
     Deque_##TYPE##_Iterator Deque_##TYPE##_Iterator_at(Deque_##TYPE *deq, INT i) {                  \
         Deque_##TYPE##_Iterator it;                                                                 \
         INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;                                      \
@@ -165,8 +163,6 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
                                                                                                     \
     void Deque_##TYPE##_destructor(Deque_##TYPE *deq) {                                             \
         free(deq->data);                                                                            \
-        /* TODO: Fix destructor! */                                                                 \
-        /*free(d); */                                                                               \
     }                                                                                               \
                                                                                                     \
     void Deque_##TYPE##_clear(Deque_##TYPE *deq) {                                                  \
@@ -190,8 +186,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             Deque_##TYPE##_Iterator it1 = deq1.begin(&deq1);                                        \
             Deque_##TYPE##_Iterator it2 = deq2.begin(&deq2);                                        \
             do {                                                                                    \
-                /* Check that dereferenced items both not less than each other                      \
-                 * This works for TYPE_less_by_id, hopefully others */                              \
+                /* Check that dereferenced items both not less than each other*/                    \
                 if (!(!deq1.comp(it1.deref(&it1), it1.deref(&it2)) &&                               \
                       !deq1.comp(it1.deref(&it2), it1.deref(&it1))))                                \
                     return false;                                                                   \
@@ -209,6 +204,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
     void Deque_##TYPE##_sort(Deque_##TYPE *deq,                                                     \
                         Deque_##TYPE##_Iterator begin,                                              \
                         Deque_##TYPE##_Iterator end) {                                              \
+        /* Implement basic insertion sort, but with iterators */                                    \
         TYPE j, k;                                                                                  \
         Deque_##TYPE##_Iterator it = begin, j_it, j_itp1;                                           \
         it.inc(&it);                                                                                \
@@ -216,20 +212,14 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             k = it.deref(&it);                                                                      \
             j_it = Deque_##TYPE##_Iterator_at(deq, it.curr_idx-1);                                  \
             j = j_it.deref(&j_it);                                                                  \
-            INT jitci = j_it.curr_idx;                                                              \
-            INT beginci = begin.curr_idx;                                                           \
-            bool jgteb = jitci >= beginci;                                                          \
-            bool compkj = deq->comp(k,j);                                                           \
                                                                                                     \
-            while(jgteb && compkj) {                                                                \
+            while(j_it.curr_idx >= begin.curr_idx && deq->comp(k,j)) {                              \
+                int j_it_curr_idx = j_it.curr_idx;                                                  \
+                int begin_curr_idx = begin.curr_idx;                                                \
                 deq->data[j_it.curr_idx + 1] = deq->data[j_it.curr_idx];                            \
                 j_it.dec(&j_it);                                                                    \
                 j = it.deref(&j_it);                                                                \
-                if(jitci == 0 && beginci == 0) break;                                               \
-                jitci = j_it.curr_idx;                                                              \
-                beginci = begin.curr_idx;                                                           \
-                jgteb = jitci >= beginci;                                                           \
-                compkj = deq->comp(k,j);                                                            \
+                if(j_it_curr_idx == 0 && begin_curr_idx == 0) break;                                \
             }                                                                                       \
             j_itp1 = Deque_##TYPE##_Iterator_at(deq, j_it.curr_idx+1);                              \
             it.deref(&j_itp1) = k;                                                                  \
@@ -237,8 +227,8 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
     }                                                                                               \
                                                                                                     \
                                                                                                     \
-void Deque_##TYPE##_Iterator_increment(Deque_##TYPE##_Iterator *it) {                               \
-    if(it->curr_idx == it->deque_capacity-1) {                                                      \
+    void Deque_##TYPE##_Iterator_increment(Deque_##TYPE##_Iterator *it) {                           \
+        if(it->curr_idx == it->deque_capacity-1) {                                                  \
             it->data_ptr = it->data_ptr - it->deque_capacity + 1;                                   \
             it->curr_idx = 0;                                                                       \
         } else {                                                                                    \
@@ -290,12 +280,12 @@ void Deque_##TYPE##_Iterator_increment(Deque_##TYPE##_Iterator *it) {           
     }                                                                                               \
                                                                                                     \
     void Deque_##TYPE##_ctor(Deque_##TYPE *deq, bool (*comp)(const TYPE&, const TYPE&)) {           \
-        deq->capacity = 4;                                                                          \
+        deq->capacity = 2;                                                                          \
         deq->data = ( TYPE *)malloc(sizeof(TYPE) * deq->capacity);                                  \
         deq->curr_size = 0;                                                                         \
         deq->f_idx = -1;                                                                            \
         deq->b_idx = 0;                                                                             \
-        sprintf(deq->type_name, "%s", "Deque_" #TYPE);                                             \
+        sprintf(deq->type_name, "%s", "Deque_" #TYPE);                                              \
         deq->push_front = &Deque_##TYPE##_push_front;                                               \
         deq->push_back = &Deque_##TYPE##_push_back;                                                 \
         deq->pop_front = &Deque_##TYPE##_pop_front;                                                 \
