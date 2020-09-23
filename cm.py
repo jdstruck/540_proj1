@@ -3,7 +3,7 @@
 import sys
 import re
 
-replace_type = "MyClass"
+replace_type = "int"
 wfile_text = ""
 drawBSlash = False
 lineWidth = 100
