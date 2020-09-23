@@ -71,7 +71,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         /* Double size of and reallocate data array */                                              \
         INT old_cap = deq->capacity;                                                                \
         deq->capacity *= 2;                                                                         \
-        deq->data = (TYPE *) realloc(deq->data, sizeof( INT ) * deq->capacity);                     \
+        deq->data = (TYPE *) realloc(deq->data, sizeof( TYPE ) * deq->capacity);                     \
         if(deq->f_idx > deq->b_idx) {                                                               \
             for(INT i = deq->f_idx; i < old_cap; ++i) {                                             \
                 INT memmove_idx = deq->capacity - ((old_cap) - i);                                  \
@@ -80,14 +80,6 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             deq->f_idx = deq->capacity - (old_cap - deq->f_idx);                                    \
                                                                                                     \
         }                                                                                           \
-    }                                                                                               \
-                                                                                                    \
-    void prTYPEidx(Deque_##TYPE *deq) {                                                             \
-        std::cout << "capacity: " << deq->capacity << std::endl;                                    \
-        std::cout << "curr_size: " << deq->curr_size << std::endl;                                  \
-        std::cout << "f_idx    : " << deq->f_idx << std::endl;                                      \
-        std::cout << "b_idx    : " << deq->b_idx << std::endl;                                      \
-        std::cout << std::endl;                                                                     \
     }                                                                                               \
                                                                                                     \
     void Deque_##TYPE##_push_back(Deque_##TYPE *deq, TYPE val) {                                    \
@@ -227,12 +219,9 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             INT jitci = j_it.curr_idx;                                                              \
             INT beginci = begin.curr_idx;                                                           \
             bool jgteb = jitci >= beginci;                                                          \
-            bool jnebegin = !Deque_##TYPE##_Iterator_equal(j_it, begin);                            \
             bool compkj = deq->comp(k,j);                                                           \
                                                                                                     \
             while(jgteb && compkj) {                                                                \
-                TYPE jitp1 = deq->data[j_it.curr_idx + 1];                                          \
-                TYPE jitp0 = deq->data[j_it.curr_idx];                                              \
                 deq->data[j_it.curr_idx + 1] = deq->data[j_it.curr_idx];                            \
                 j_it.dec(&j_it);                                                                    \
                 j = it.deref(&j_it);                                                                \
@@ -240,7 +229,6 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
                 jitci = j_it.curr_idx;                                                              \
                 beginci = begin.curr_idx;                                                           \
                 jgteb = jitci >= beginci;                                                           \
-                jnebegin = !Deque_##TYPE##_Iterator_equal(j_it, begin);                             \
                 compkj = deq->comp(k,j);                                                            \
             }                                                                                       \
             j_itp1 = Deque_##TYPE##_Iterator_at(deq, j_it.curr_idx+1);                              \
