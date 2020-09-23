@@ -1,5 +1,3 @@
-/* Macro */
-
 #ifndef __DEQUE_H_
 #define __DEQUE_H_
 
@@ -8,28 +6,14 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <algorithm>
-
-// Use INT macro for all ints not dependent on type
-// passed into Deque_DEFINE() macro. Otherwise they
-// get redefined.
-
-// Note: The script is dumb, so after converting back from
-// make sure to check the "int" at the end of the next line,
-// plus "sprintf" in the ctor after converting back from int,
-// possibly other places...
-#define INT int
-
-// Redefine for testing; commented out when macro
-/*// struct MyClass { INT id; char name[10]; };*/
 
 #define Deque_DEFINE(TYPE)                                                                          \
 struct Deque_##TYPE##_Iterator;                                                                     \
-const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                                                \
+const int str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                                                \
     struct Deque_##TYPE##_Iterator {                                                                \
         TYPE *data_ptr;                                                                             \
-        INT curr_idx;                                                                               \
-        INT deque_capacity;                                                                         \
+        int curr_idx;                                                                               \
+        int deque_capacity;                                                                         \
         void (*inc)(Deque_##TYPE##_Iterator*);                                                      \
         void (*dec)(Deque_##TYPE##_Iterator*);                                                      \
         TYPE &(*deref)(Deque_##TYPE##_Iterator*);                                                   \
@@ -39,14 +23,14 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         TYPE *data;                                                                                 \
         size_t capacity;                                                                            \
         size_t curr_size;                                                                           \
-        INT f_idx;                                                                                  \
-        INT b_idx;                                                                                  \
+        int f_idx;                                                                                  \
+        int b_idx;                                                                                  \
         char type_name[str_##TYPE##_sizeof];                                                        \
         void (*push_back)(Deque_##TYPE *, TYPE);                                                    \
         void (*push_front)(Deque_##TYPE *, TYPE);                                                   \
         void (*pop_back)(Deque_##TYPE *);                                                           \
         void (*pop_front)(Deque_##TYPE *);                                                          \
-        TYPE &(*at)(Deque_##TYPE *, INT);                                                           \
+        TYPE &(*at)(Deque_##TYPE *, int);                                                           \
         TYPE &(*front)(Deque_##TYPE *);                                                             \
         TYPE &(*back)(Deque_##TYPE *);                                                              \
         size_t (*size)(Deque_##TYPE *);                                                             \
@@ -63,17 +47,17 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
     void Deque_##TYPE##_Iterator_decrement(Deque_##TYPE##_Iterator *);                              \
     void Deque_##TYPE##_Iterator_increment(Deque_##TYPE##_Iterator *);                              \
     TYPE &Deque_##TYPE##_Iterator_dereference(Deque_##TYPE##_Iterator *);                           \
-    Deque_##TYPE##_Iterator &Deque_##TYPE##_Iterator_at(Deque_##TYPE, INT);                         \
+    Deque_##TYPE##_Iterator &Deque_##TYPE##_Iterator_at(Deque_##TYPE, int);                         \
     bool Deque_##TYPE##_Iterator_equal(Deque_##TYPE##_Iterator, Deque_##TYPE##_Iterator);           \
                                                                                                     \
     void Deque_##TYPE##_resize(Deque_##TYPE *deq) {                                                 \
         /* Double size of and reallocate data array */                                              \
-        INT old_cap = deq->capacity;                                                                \
+        int old_cap = deq->capacity;                                                                \
         deq->capacity *= 2;                                                                         \
         deq->data = (TYPE *) realloc(deq->data, sizeof( TYPE ) * deq->capacity);                    \
         if(deq->f_idx > deq->b_idx) {                                                               \
-            for(INT i = deq->f_idx; i < old_cap; ++i) {                                             \
-                INT memmove_idx = deq->capacity - ((old_cap) - i);                                  \
+            for(int i = deq->f_idx; i < old_cap; ++i) {                                             \
+                int memmove_idx = deq->capacity - ((old_cap) - i);                                  \
                 deq->data[memmove_idx] = deq->data[i];                                              \
             }                                                                                       \
             deq->f_idx = deq->capacity - (old_cap - deq->f_idx);                                    \
@@ -86,7 +70,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         }                                                                                           \
         if(deq->empty(deq)) {                                                                       \
             deq->f_idx = deq->b_idx = 0;                                                            \
-        } else if(deq->b_idx == ( INT ) deq->capacity-1) {                                          \
+        } else if(deq->b_idx == ( int ) deq->capacity-1) {                                          \
             deq->b_idx = 0;                                                                         \
         } else {                                                                                    \
             ++deq->b_idx;                                                                           \
@@ -116,7 +100,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             return;                                                                                 \
         }                                                                                           \
         if(deq->b_idx == 0) {                                                                       \
-            deq->b_idx = ( INT ) deq->capacity-1;                                                   \
+            deq->b_idx = ( int ) deq->capacity-1;                                                   \
         } else {                                                                                    \
             --deq->b_idx;                                                                           \
         }                                                                                           \
@@ -128,7 +112,7 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
             deq->f_idx = deq->b_idx = -1;                                                           \
             return;                                                                                 \
         }                                                                                           \
-        if (deq->f_idx == ( INT ) deq->capacity-1) {                                                \
+        if (deq->f_idx == ( int ) deq->capacity-1) {                                                \
             deq->f_idx = 0;                                                                         \
         } else {                                                                                    \
             ++deq->f_idx;                                                                           \
@@ -144,14 +128,14 @@ const INT str_##TYPE##_sizeof = sizeof( #TYPE ) + 6;                            
         return deq->data[deq->b_idx];                                                               \
     }                                                                                               \
                                                                                                     \
-    TYPE &Deque_##TYPE##_at(Deque_##TYPE *deq, INT i) {                                             \
-        INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;                                      \
+    TYPE &Deque_##TYPE##_at(Deque_##TYPE *deq, int i) {                                             \
+        int at_idx = (i + deq->f_idx) % ( int ) deq->capacity;                                      \
         return deq->data[at_idx];                                                                   \
     }                                                                                               \
                                                                                                     \
-    Deque_##TYPE##_Iterator Deque_##TYPE##_Iterator_at(Deque_##TYPE *deq, INT i) {                  \
+    Deque_##TYPE##_Iterator Deque_##TYPE##_Iterator_at(Deque_##TYPE *deq, int i) {                  \
         Deque_##TYPE##_Iterator it;                                                                 \
-        INT at_idx = (i + deq->f_idx) % ( INT ) deq->capacity;                                      \
+        int at_idx = (i + deq->f_idx) % ( int ) deq->capacity;                                      \
         it.curr_idx = at_idx;                                                                       \
         it.data_ptr = &deq->data[it.curr_idx];                                                      \
         it.deque_capacity = deq->capacity;                                                          \
