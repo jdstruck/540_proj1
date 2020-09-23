@@ -377,24 +377,24 @@ main() {
         deq.dtor(&deq);
     }
 
-//    // Test random access performance
-//    {
-//        size_t sum = 0;
-//        int lo = 0, hi = 10000000;
-//        Deque_int deq;
-//        Deque_int_ctor(&deq, int_less);
-//
-//        for(int i = lo; i < hi; i++) {
-//            deq.push_back(&deq, i);
-//        }
-//
-//        for(int i = lo; i < hi; i++) {
-//            sum += deq.at(&deq, i);
-//        }
-//        printf("Sum of all integers between %d and %d calculated using a deque is %lu.\n", lo, hi, sum);
-//        deq.dtor(&deq);
-//    }
-//
+    // Test random access performance
+    {
+        size_t sum = 0;
+        int lo = 0, hi = 10000000;
+        Deque_int deq;
+        Deque_int_ctor(&deq, int_less);
+
+        for(int i = lo; i < hi; i++) {
+            deq.push_back(&deq, i);
+        }
+
+        for(int i = lo; i < hi; i++) {
+            sum += deq.at(&deq, i);
+        }
+        printf("Sum of all integers between %d and %d calculated using a deque is %lu.\n", lo, hi, sum);
+        deq.dtor(&deq);
+    }
+
 //    // Test sort.
 //    // You must be able to work with the correct less-than function.
 //    {
